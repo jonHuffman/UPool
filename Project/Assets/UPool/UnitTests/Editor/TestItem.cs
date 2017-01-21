@@ -2,6 +2,9 @@
 
 namespace UPool.Tests
 {
+    /// <summary>
+    /// A simple test item for use in Unit Tests
+    /// </summary>
     public class TestItem : IPoolable
     {
         public const int UNALLOCATED_NUMBER = -1;

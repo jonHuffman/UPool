@@ -29,32 +29,16 @@ namespace UPool
         /// <summary>
         /// The Type of the Pool that is being created
         /// </summary>
-        protected abstract Type PoolType
+        public abstract Type PoolType
         {
             get;
-        }
-
-        /// <summary>
-        /// Creates a pool of the specified size for PoolType
-        /// </summary>
-        /// <param name="initialSize">Initial size of the pool</param>
-        public AbstractPool(int initialSize)
-        {
-            _generator = new DefaultGenerator(PoolType);
-            _pool = new List<IPoolable>(initialSize);
-            _availableObjects = new Queue<IPoolable>();
-
-            for (int i = 0; i < initialSize; ++i)
-            {
-                CreateNewInstance();
-            }
         }
 
         /// <summary>
         /// Returns an object to the pool making it available for re-use.
         /// </summary>
         /// <param name="obj">The object to return to the pool. Must have originated from the pool.</param>
-        public void Recycle(IPoolable obj)
+        public virtual void Recycle(IPoolable obj)
         {
             if (_pool == null)
             {
@@ -120,6 +104,21 @@ namespace UPool
             return obj;
         }
 
+        /// <summary>
+        /// Creates the Pool containers and fills them to the specified size.
+        /// </summary>
+        /// <param name="initialSize">Initial size of the Pool</param>
+        protected void InitializePool(int initialSize)
+        {
+            initialSize = initialSize > 0 ? initialSize : 0;
+            _pool = new List<IPoolable>(initialSize);
+            _availableObjects = new Queue<IPoolable>();
+
+            for (int i = 0; i < initialSize; ++i)
+            {
+                CreateNewInstance();
+            }
+        }
 
         /// <summary>
         /// Creates and adds a new instance of the poolable object to the pool.
@@ -128,6 +127,7 @@ namespace UPool
         protected void CreateNewInstance()
         {
             IPoolable newObj = _generator.CreateInstance();
+            newObj.Init(this);
             _pool.Add(newObj);
             _availableObjects.Enqueue(newObj);
         }

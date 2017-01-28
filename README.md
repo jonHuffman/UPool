@@ -1,3 +1,4 @@
+[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/UPool/raw/master/Package/UPool_v1.0.unitypackage)
 [![version](https://img.shields.io/badge/version-v1.0-blue.svg)]()
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/jonHuffman/UPool/blob/master/LICENSE.md)
 # UPool

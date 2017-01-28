@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using UnityEngine;
+using UPool.Demo;
 
 namespace UPool.Tests
 {

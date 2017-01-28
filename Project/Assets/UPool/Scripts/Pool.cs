@@ -9,6 +9,8 @@ namespace UPool
     /// <typeparam name="T">An IPoolable</typeparam>
     public class Pool<T> : AbstractPool where T : IPoolable
     {
+        public static readonly Vector3 AUTO_CONTAINER_POSITION = new Vector3(-9999, 0, 0);
+
         private Transform _container;
 
         public override Type PoolType
@@ -111,7 +113,7 @@ namespace UPool
         private Transform CreateContainer(string objectName)
         {
             GameObject container = new GameObject(string.Format("{0}Pool", objectName));
-            container.transform.position = new Vector3(-9999, 0, 0);
+            container.transform.position = AUTO_CONTAINER_POSITION;
             return container.transform;
         }
     }

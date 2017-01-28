@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UPool
 {
-    public class PoolableObject : MonoBehaviour, IPoolable
+    public sealed class PoolableObject : MonoBehaviour, IPoolable
     {
         [SerializeField]
         private bool _disableObject = false;
@@ -64,7 +64,7 @@ namespace UPool
         {
             if (_disableObject)
             {
-                gameObject.SetActive(true);
+                gameObject.SetActive(false);
             }
             else
             {
@@ -75,10 +75,9 @@ namespace UPool
 
                 if (_disableRenderers)
                 {
-                    EnableColliders();
+                    DisableRenderers();
                 }
             }
-            DisableColliders();
 
             if (OnDeallocate != null)
             {

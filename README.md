@@ -5,6 +5,10 @@
 ## Description
 UPool is a Generic Object Pooling system for Unity3d.
 
+```csharp
+Pool<DemoObj> pool = new Pool<DemoObj>(3);
+```
+
 ## Features
 * Pools both GameObjects and C# Objects
 * Pre-define the size of your Pool to control object instantiation

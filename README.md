@@ -1,8 +1,13 @@
-[![version](https://img.shields.io/badge/version-v1.0-blue.svg)]()
+[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/UPool/raw/master/Package/UPool_v1.0.unitypackage)
+[![version](https://img.shields.io/badge/version-v1.0-blue.svg)](https://github.com/jonHuffman/UPool)
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/jonHuffman/UPool/blob/master/LICENSE.md)
 # UPool
 ## Description
 UPool is a Generic Object Pooling system for Unity3d.
+
+```csharp
+Pool<DemoObj> pool = new Pool<DemoObj>(3);
+```
 
 ## Features
 * Pools both GameObjects and C# Objects
@@ -88,7 +93,7 @@ public class DemoObj : IPoolable
 }
 ```
 #### Init(AbstractPool owner)
-The **Init** method is called each time a new instance is created by the Pool. It is up to you how you choose to use this method. The _owner_ argument is the Pool object that owns this instance, you are free to store this reference and use it later.
+The **Init** method is called each time a new instance is created by the Pool and *it is only called once* in the lifecycle of the object. It is up to you how you choose to use this method. The _owner_ argument is the Pool object that owns this instance, you are free to store this reference and use it later.
 
 #### Destroy()
 The **Destroy** method self-axplanitory. This method is called when the Pool's **Destroy** method is called, and provides you a location to perform and cleanup that may need to occur.

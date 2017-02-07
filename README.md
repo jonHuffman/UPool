@@ -93,7 +93,7 @@ public class DemoObj : IPoolable
 }
 ```
 #### Init(AbstractPool owner)
-The **Init** method is called each time a new instance is created by the Pool. It is up to you how you choose to use this method. The _owner_ argument is the Pool object that owns this instance, you are free to store this reference and use it later.
+The **Init** method is called each time a new instance is created by the Pool and *it is only called once* in the lifecycle of the object. It is up to you how you choose to use this method. The _owner_ argument is the Pool object that owns this instance, you are free to store this reference and use it later.
 
 #### Destroy()
 The **Destroy** method self-axplanitory. This method is called when the Pool's **Destroy** method is called, and provides you a location to perform and cleanup that may need to occur.

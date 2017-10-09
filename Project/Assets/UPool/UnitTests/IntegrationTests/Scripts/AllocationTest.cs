@@ -23,7 +23,7 @@ public class AllocationTest : MonoBehaviour
 
     private void Start()
     {
-        PoolableObject item = _pool.Aquire();
+        PoolableObject item = _pool.Acquire();
 
         Assert.AreEqual(DemoObj.AllocationState.Allocated, item.GetComponent<DemoObj>().State, "OnAllocate action was not invoked upon PoolableObject allocation");
 

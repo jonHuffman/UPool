@@ -12,6 +12,7 @@ namespace UPool
         public static readonly Vector3 AUTO_CONTAINER_POSITION = new Vector3(-9999, 0, 0);
 
         private Transform _container;
+        private bool _isGameObject = false;
 
         public override Type PoolType
         {
@@ -67,19 +68,26 @@ namespace UPool
             }
 
             _generator = new UnityGenerator(this, template, _container);
+            _isGameObject = true;
 
             InitializePool(initialSize);
+        }
+
+        [Obsolete("Use Acquire instead.")]
+        public T Aquire()
+        {
+            return Acquire();
         }
 
         /// <summary>
         /// Aquires an unallocated object from the pool and provides it for use. If no unallocated objects are available, a new one will be created.
         /// </summary>
         /// <returns>An object of type T for use. If T is a MonoBehaviour, the Transform will be reset.</returns>
-        public new T Aquire()
+        public new T Acquire()
         {
-            T obj = (T)base.Aquire();
+            T obj = (T)base.Acquire();
 
-            if (typeof(MonoBehaviour).IsAssignableFrom(typeof(T)))
+            if (_isGameObject)
             {
                 (obj as MonoBehaviour).transform.SetParent(null);
                 (obj as MonoBehaviour).transform.position = Vector3.zero;
@@ -98,7 +106,7 @@ namespace UPool
         {
             base.Recycle(obj);
 
-            if (typeof(MonoBehaviour).IsAssignableFrom(typeof(T)))
+            if (_isGameObject)
             {
                 (obj as MonoBehaviour).transform.SetParent(_container);
                 (obj as MonoBehaviour).transform.localPosition = Vector3.zero;

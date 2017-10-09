@@ -19,7 +19,7 @@ namespace UPool.Demo
 
         private void GetObjFromPool()
         {
-            _pool.Aquire().transform.position = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f));
+            _pool.Acquire().transform.position = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f));
         }
     }
 }

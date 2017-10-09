@@ -43,7 +43,7 @@ public class RecycleTests : MonoBehaviour
 
     private void AquisitionTest()
     {
-        PoolableObject item = _disableObjPool.Aquire();
+        PoolableObject item = _disableObjPool.Acquire();
 
         Assert.IsNull(item.transform.parent, "Object Parent has not been set to the root of the Hierarchy");
         Assert.AreEqual(Vector3.zero, item.transform.position, "Object Position has not been reset to Vector3.zero");
@@ -55,7 +55,7 @@ public class RecycleTests : MonoBehaviour
 
     private void RecycleTest()
     {
-        PoolableObject item = _disableObjPool.Aquire();
+        PoolableObject item = _disableObjPool.Acquire();
         _disableObjPool.Recycle(item);
 
         Assert.AreEqual(_container.transform, item.transform.parent, "Object Parent has not been reset to the Container upon recycle");
@@ -64,7 +64,7 @@ public class RecycleTests : MonoBehaviour
 
     private void DisableObjectTest()
     {
-        PoolableObject item = _disableObjPool.Aquire();
+        PoolableObject item = _disableObjPool.Acquire();
 
         Assert.IsTrue(item.gameObject.activeSelf, "This object was not Enabled during allocation");
 
@@ -81,7 +81,7 @@ public class RecycleTests : MonoBehaviour
 
     private void DisableCollidersTest()
     {
-        PoolableObject item = _disableColliderPool.Aquire();
+        PoolableObject item = _disableColliderPool.Acquire();
         _disableColliderPool.Recycle(item);
 
         Assert.IsTrue(item.gameObject.activeSelf, "This object was Disabled during allocation and it should not have been");
@@ -95,7 +95,7 @@ public class RecycleTests : MonoBehaviour
 
     private void DisableRenderersTest()
     {
-        PoolableObject item = _disableRendererPool.Aquire();
+        PoolableObject item = _disableRendererPool.Acquire();
         _disableRendererPool.Recycle(item);
 
         Assert.IsTrue(item.gameObject.activeSelf, "This object was Disabled during allocation and it should not have been");

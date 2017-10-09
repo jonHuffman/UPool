@@ -27,7 +27,7 @@ public class DeallocationTest : MonoBehaviour
 
     private void Start()
     {
-        PoolableObject item = _pool.Aquire();
+        PoolableObject item = _pool.Acquire();
         _pool.Recycle(item);        
         
         Assert.AreEqual(DemoObj.AllocationState.Deallocated, item.GetComponent<DemoObj>().State, "OnDeallocate action was not invoked upon PoolableObject allocation");

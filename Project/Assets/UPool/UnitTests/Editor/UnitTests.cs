@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using UnityEngine;
-using UPool.Demo;
 
 namespace UPool.Tests
 {
@@ -19,12 +17,12 @@ namespace UPool.Tests
             // Test size after aquisition
             for (int i = 0; i < poolSize; ++i)
             {
-                pool.Aquire();
+                pool.Acquire();
             }
             Assert.AreEqual(poolSize, pool.Size, "The initial size of the pool was {0}, expected {1} after aquisition", poolSize, pool.Size);
 
             // Test size after aquiring more items that exist in the pool
-            pool.Aquire();
+            pool.Acquire();
             Assert.Greater(pool.Size, poolSize, "The pool size did not properly increase when additional items were aquired. Was {0}, expected {1} after aquisition", poolSize, pool.Size);
         }
 
@@ -34,7 +32,7 @@ namespace UPool.Tests
             const int poolSize = 1;
 
             Pool<TestItem> pool = new Pool<TestItem>(poolSize);
-            TestItem item = pool.Aquire();
+            TestItem item = pool.Acquire();
 
             Assert.AreNotEqual(TestItem.UNALLOCATED_NUMBER, item.number, "TestItem Allocation did not occur properly. Number should not be {0}", TestItem.UNALLOCATED_NUMBER);
         }
@@ -45,7 +43,7 @@ namespace UPool.Tests
             const int poolSize = 1;
 
             Pool<TestItem> pool = new Pool<TestItem>(poolSize);
-            TestItem item = pool.Aquire();
+            TestItem item = pool.Acquire();
             pool.Recycle(item);
 
             Assert.AreEqual(TestItem.UNALLOCATED_NUMBER, item.number, "TestItem Deallocation did no occur properly. Number should be {0}", TestItem.UNALLOCATED_NUMBER);
@@ -59,10 +57,10 @@ namespace UPool.Tests
 
             // Test initial size
             Pool<TestItem> pool = new Pool<TestItem>(poolSize);
-            TestItem item = pool.Aquire();
+            TestItem item = pool.Acquire();
             item.name = itemName;
             pool.Recycle(item);
-            item = pool.Aquire();
+            item = pool.Acquire();
 
             Assert.AreEqual(itemName, item.name, "TestItem was not recycled, name should have been {0}", item.name);
         }
@@ -74,8 +72,8 @@ namespace UPool.Tests
 
             // Test that all items created by the pool get destroyed regardless of allocation
             Pool<TestItem> pool = new Pool<TestItem>(poolSize);
-            TestItem item1 = pool.Aquire();
-            TestItem item2 = pool.Aquire();
+            TestItem item1 = pool.Acquire();
+            TestItem item2 = pool.Acquire();
             pool.Recycle(item1);
             pool.Destroy();
 
@@ -90,8 +88,8 @@ namespace UPool.Tests
 
             // Test that allocated items do not get destroyed
             Pool<TestItem> pool = new Pool<TestItem>(poolSize);
-            TestItem item1 = pool.Aquire();
-            TestItem item2 = pool.Aquire();
+            TestItem item1 = pool.Acquire();
+            TestItem item2 = pool.Acquire();
             pool.Recycle(item1);
             pool.Destroy(false);
 

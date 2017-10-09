@@ -6,7 +6,8 @@ namespace UPool
     public abstract class AbstractPool
     {
         protected IGenerator _generator;
-        protected List<IPoolable> _pool;
+        protected HashSet<IPoolable> _pool;
+        protected HashSet<IPoolable> _allocatedObjects;
         protected Queue<IPoolable> _availableObjects;
 
         /// <summary>
@@ -45,9 +46,10 @@ namespace UPool
                 throw new InvalidOperationException("The Pool has been destroyed. Objects can no longer be Recycled into it.");
             }
 
-            if (_pool.Contains(obj))
+            if (_pool.Contains(obj) && _allocatedObjects.Contains(obj))
             {
                 obj.OnDeallocate();
+                _allocatedObjects.Remove(obj);
                 _availableObjects.Enqueue(obj);
             }
             else
@@ -65,11 +67,20 @@ namespace UPool
         /// </param>
         public void Destroy(bool destroyAllocatedObjects = true)
         {
+            if(_pool == null)
+            {
+                throw new InvalidOperationException("Pool has already been destroyed.");
+            }
+
             if (destroyAllocatedObjects)
             {
-                for (int i = 0, count = _pool.Count; i < count; ++i)
+                foreach(IPoolable item in _allocatedObjects)
                 {
-                    _pool[i].Destroy();
+                    item.OnDeallocate();
+                }
+                foreach (IPoolable item in _pool)
+                {
+                    item.Destroy();
                 }
             }
             else
@@ -81,13 +92,15 @@ namespace UPool
             }
 
             _pool = null;
+            _allocatedObjects = null;
+            _availableObjects = null;
         }
 
         /// <summary>
         /// Aquires an unallocated object from the pool and provides it for use. If no unallocated objects are available, a new one will be created.
         /// </summary>
         /// <returns>An object of type IPoolable for use</returns>
-        protected IPoolable Aquire()
+        protected IPoolable Acquire()
         {
             if (_pool == null)
             {
@@ -101,6 +114,7 @@ namespace UPool
 
             IPoolable obj = _availableObjects.Dequeue();
             obj.OnAllocate();
+            _allocatedObjects.Add(obj);
             return obj;
         }
 
@@ -111,7 +125,8 @@ namespace UPool
         protected void InitializePool(int initialSize)
         {
             initialSize = initialSize > 0 ? initialSize : 0;
-            _pool = new List<IPoolable>(initialSize);
+            _pool = new HashSet<IPoolable>();
+            _allocatedObjects = new HashSet<IPoolable>();
             _availableObjects = new Queue<IPoolable>();
 
             for (int i = 0; i < initialSize; ++i)

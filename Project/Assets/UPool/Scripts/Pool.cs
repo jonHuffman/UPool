@@ -114,6 +114,23 @@ namespace UPool
         }
 
         /// <summary>
+        /// Cleans up the Pool and destroys its container, prepping it for garbage collection.
+        /// </summary>
+        /// <param name="destroyAllocatedObjects">
+        /// If true, destroys all objects managed by the pool regardless of their allocation status. 
+        /// If false, only unallocated objects will be destroyed. Allocated objects will be orphaned.
+        /// </param>
+        public override void Destroy(bool destroyAllocatedObjects = true)
+        {
+            base.Destroy(destroyAllocatedObjects);
+            
+            if (_container != null)
+            {
+                UnityEngine.Object.Destroy(_container.gameObject);
+            }
+        }
+
+        /// <summary>
         /// Creates a container that the pooled GameObjects will reside in when not in use.
         /// </summary>
         /// <param name="objectName">Name of the GameObject that is being pooled.</param>

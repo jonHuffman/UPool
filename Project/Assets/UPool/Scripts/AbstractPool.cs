@@ -46,16 +46,39 @@ namespace UPool
                 throw new InvalidOperationException("The Pool has been destroyed. Objects can no longer be Recycled into it.");
             }
 
-            if (_pool.Contains(obj) && _allocatedObjects.Contains(obj))
+            if (_pool.Contains(obj))
             {
-                obj.OnDeallocate();
-                _allocatedObjects.Remove(obj);
-                _availableObjects.Enqueue(obj);
+                if (_allocatedObjects.Contains(obj))
+                {
+                    obj.OnDeallocate();
+                    _allocatedObjects.Remove(obj);
+                    _availableObjects.Enqueue(obj);
+                }
             }
             else
             {
                 throw new InvalidOperationException("Cannot Recycle Objects into a Pool that did not originate from it.");
             }
+        }
+
+        /// <summary>
+        /// Recycle all allocated objects.
+        /// </summary>
+        public void RecycleAll()
+        {
+            if (_pool == null)
+            {
+                throw new InvalidOperationException("Pool has already been destroyed.");
+            }
+
+            IPoolable[] allocated = new IPoolable[_allocatedObjects.Count];
+            _allocatedObjects.CopyTo(allocated);
+            foreach(IPoolable item in allocated)
+            {
+                Recycle(item);
+            }
+
+            _allocatedObjects.Clear();
         }
 
         /// <summary>
@@ -65,7 +88,7 @@ namespace UPool
         /// If true, destroys all objects managed by the pool regardless of their allocation status. 
         /// If false, only unallocated objects will be destroyed. Allocated objects will be orphaned.
         /// </param>
-        public void Destroy(bool destroyAllocatedObjects = true)
+        public virtual void Destroy(bool destroyAllocatedObjects = true)
         {
             if(_pool == null)
             {
@@ -142,9 +165,9 @@ namespace UPool
         protected void CreateNewInstance()
         {
             IPoolable newObj = _generator.CreateInstance();
-            newObj.Init(this);
             _pool.Add(newObj);
             _availableObjects.Enqueue(newObj);
+            newObj.Init(this);
         }
     }
 }

@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/UPool/raw/master/Package/UPool_v1.0.unitypackage)
+[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/UPool/raw/master/Binaries/UPool_v1.0.unitypackage)
 [![version](https://img.shields.io/badge/version-v1.0-blue.svg)](https://github.com/jonHuffman/UPool)
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/jonHuffman/UPool/blob/master/LICENSE.md)
 # UPool
@@ -157,6 +157,6 @@ _Remember to clear any cached references when an object is recycled!_
 	* PoolableObject caches references to your Colliders and Renderers on Awake in order to minimize overhead performance on these calls.
 
 ## Meta
-Created by Jon Huffman [[twitter](https://twitter.com/AtticusMarkane) &bull; [github](https://github.com/ByronMayne) &bull; [Website](http://jonhuffman.com/)]
+Created by Jon Huffman [[twitter](https://twitter.com/AtticusMarkane) &bull; [github](https://github.com/jonHuffman)]
 
 Released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).

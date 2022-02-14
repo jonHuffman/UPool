@@ -1,23 +1,20 @@
-﻿using UnityEngine;
-using UnityEngine.Assertions;
-using UnityTest;
+﻿using NUnit.Framework;
+using UnityEngine;
 using UPool;
 using UPool.Demo;
+using Assert = UnityEngine.Assertions.Assert;
 
 /// <summary>
 /// Tests the OnDeallocate Action invokation of PoolableObject
 /// </summary>
-[RequireComponent(typeof(TestComponent))]
-public class DeallocationTest : MonoBehaviour
+public class DeallocationTest
 {
     private Pool<PoolableObject> _pool;
-    private TestComponent _testCmp;
     private GameObject _container;
 
-    private void Awake()
+    [SetUp]
+    public void SetUp()
     {
-        _testCmp = GetComponent<TestComponent>();
-
         const int poolSize = 1;
         _container = new GameObject("Container");
         _container.transform.position = Pool<PoolableObject>.AUTO_CONTAINER_POSITION;
@@ -25,13 +22,12 @@ public class DeallocationTest : MonoBehaviour
         _pool = new Pool<PoolableObject>(poolSize, Resources.Load<GameObject>("AllocationTestObject"), _container.transform);
     }
 
-    private void Start()
+    [Test]
+    public void DeallocateGameObject()
     {
         PoolableObject item = _pool.Acquire();
         _pool.Recycle(item);        
         
         Assert.AreEqual(DemoObj.AllocationState.Deallocated, item.GetComponent<DemoObj>().State, "OnDeallocate action was not invoked upon PoolableObject allocation");
-
-        IntegrationTest.Pass();
     }
 }

@@ -1,26 +1,23 @@
 ﻿using System;
+using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityTest;
 using UPool;
-using UPool.Demo;
+using Assert = UnityEngine.Assertions.Assert;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// Tests general aquisition and recycling of PoolableObjects
 /// </summary>
-[RequireComponent(typeof(TestComponent))]
-public class RecycleTests : MonoBehaviour
+public class RecycleTests
 {
     private Pool<PoolableObject> _disableObjPool;
     private Pool<PoolableObject> _disableColliderPool;
     private Pool<PoolableObject> _disableRendererPool;
-    private TestComponent _testCmp;
     private GameObject _container;
 
-    private void Awake()
+    [SetUp]
+    public void SetUp()
     {
-        _testCmp = GetComponent<TestComponent>();
-
         const int poolSize = 1;
         _container = new GameObject("Container");
         _container.transform.position = Pool<PoolableObject>.AUTO_CONTAINER_POSITION;
@@ -30,18 +27,18 @@ public class RecycleTests : MonoBehaviour
         _disableRendererPool = new Pool<PoolableObject>(poolSize, Resources.Load<GameObject>("DisableRendererTestObject"));
     }
 
-    private void Start()
+    [TearDown]
+    public void TearDown()
     {
-        AquisitionTest();
-        RecycleTest();
-        DisableObjectTest();
-        DisableCollidersTest();
-        DisableRenderersTest();
-
-        IntegrationTest.Pass();
+        _disableObjPool.Destroy(true);
+        _disableColliderPool.Destroy(true);
+        _disableRendererPool.Destroy(true);
+        
+        Object.Destroy(_container);
     }
 
-    private void AquisitionTest()
+    [Test]
+    public void AquisitionTest()
     {
         PoolableObject item = _disableObjPool.Acquire();
 
@@ -53,7 +50,8 @@ public class RecycleTests : MonoBehaviour
         _disableObjPool.Recycle(item);
     }
 
-    private void RecycleTest()
+    [Test]
+    public void RecycleTest()
     {
         PoolableObject item = _disableObjPool.Acquire();
         _disableObjPool.Recycle(item);
@@ -62,7 +60,8 @@ public class RecycleTests : MonoBehaviour
         Assert.AreEqual(Vector3.zero, item.transform.localPosition, "Object Local Position has not been reset to Vector3.zero");
     }
 
-    private void DisableObjectTest()
+    [Test]
+    public void DisableObjectTest()
     {
         PoolableObject item = _disableObjPool.Acquire();
 
@@ -79,7 +78,8 @@ public class RecycleTests : MonoBehaviour
         Array.ForEach<Renderer>(renderers, (ren) => Assert.IsTrue(ren.enabled, "A renderer was disabled when it should not have been"));
     }
 
-    private void DisableCollidersTest()
+    [Test]
+    public void DisableCollidersTest()
     {
         PoolableObject item = _disableColliderPool.Acquire();
         _disableColliderPool.Recycle(item);
@@ -93,7 +93,8 @@ public class RecycleTests : MonoBehaviour
         Array.ForEach<Renderer>(renderers, (ren) => Assert.IsTrue(ren.enabled, "A renderer was disabled when it should not have been"));
     }
 
-    private void DisableRenderersTest()
+    [Test]
+    public void DisableRenderersTest()
     {
         PoolableObject item = _disableRendererPool.Acquire();
         _disableRendererPool.Recycle(item);

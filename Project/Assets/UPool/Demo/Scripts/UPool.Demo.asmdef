@@ -1,0 +1,16 @@
+{
+    "name": "UPool.Demo",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ea5930c1c0e0b164099fc9ee189d0c76"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

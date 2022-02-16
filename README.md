@@ -1,5 +1,5 @@
-[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/UPool/raw/master/Binaries/UPool_v1.0.unitypackage)
-[![version](https://img.shields.io/badge/version-v1.0-blue.svg)](https://github.com/jonHuffman/UPool)
+[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/UPool/raw/master/Binaries/UPool_v1.2.unitypackage)
+[![version](https://img.shields.io/badge/version-v1.2-blue.svg)](https://github.com/jonHuffman/UPool)
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/jonHuffman/UPool/blob/master/LICENSE.md)
 # UPool
 ## Description

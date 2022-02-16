@@ -6,25 +6,30 @@ namespace UPool
     public sealed class PoolableObject : MonoBehaviour, IPoolable
     {
         [SerializeField]
-        private bool _disableObject = false;
+        private bool _disableOnDeallocation = false;
         [SerializeField]
-        private bool _disableColliders = true;
+        private bool _disableCollidersOnDeallocation = true;
         [SerializeField]
-        private bool _disableRenderers = false;
+        private bool _disableRenderersOnDeallocation = false;
 
         /// <summary>
         /// Called whenever the object is retrieved from the pool for use.
         /// </summary>
-        public Action OnAllocate;
+        public Action ObjectAllocated;
+
         /// <summary>
         /// Called whenever the object is Recycled
         /// </summary>
-        public Action OnDeallocate;
+        public Action ObjectDeallocated;
 
         private AbstractPool _owner;
         private Collider[] _colliders;
         private Collider2D[] _2dColliders;
         private Renderer[] _renderers;
+
+        private bool EnableOnAllocation => !_disableOnDeallocation;
+        private bool EnableCollidersOnAllocation => !_disableCollidersOnDeallocation;
+        private bool EnableRenderersOnAllocation => !_disableRenderersOnDeallocation;
 
         void IPoolable.Init(AbstractPool owner)
         {
@@ -37,51 +42,51 @@ namespace UPool
 
         void IPoolable.OnAllocate()
         {
-            if(_disableObject)
+            if(EnableOnAllocation)
             {
                 gameObject.SetActive(true);
             }
             else
             {
-                if(_disableColliders)
+                if(EnableCollidersOnAllocation)
                 {
                     EnableColliders();
                 }
 
-                if(_disableRenderers)
+                if(EnableRenderersOnAllocation)
                 {
                     EnableRenderers();
                 }
             }
 
-            if(OnAllocate != null)
+            if(ObjectAllocated != null)
             {
-                OnAllocate();
+                ObjectAllocated();
             }
         }
 
         void IPoolable.OnDeallocate()
         {
-            if (_disableObject)
+            if (_disableOnDeallocation)
             {
                 gameObject.SetActive(false);
             }
             else
             {
-                if (_disableColliders)
+                if (_disableCollidersOnDeallocation)
                 {
                     DisableColliders();
                 }
 
-                if (_disableRenderers)
+                if (_disableRenderersOnDeallocation)
                 {
                     DisableRenderers();
                 }
             }
 
-            if (OnDeallocate != null)
+            if (ObjectDeallocated != null)
             {
-                OnDeallocate();
+                ObjectDeallocated();
             }
         }
 
@@ -92,8 +97,8 @@ namespace UPool
             _2dColliders = null;
             _renderers = null;
 
-            OnAllocate = null;
-            OnDeallocate = null;
+            ObjectAllocated = null;
+            ObjectDeallocated = null;
         }
 
         /// <summary>

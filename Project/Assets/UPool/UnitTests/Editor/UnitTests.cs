@@ -75,7 +75,7 @@ namespace UPool.Tests
             TestItem item1 = pool.Acquire();
             TestItem item2 = pool.Acquire();
             pool.Recycle(item1);
-            pool.Destroy();
+            pool.DestroyAndDeallocateAll();
 
             Assert.IsTrue(item1.isDestroyed, "Item 1 was not destroyed.");
             Assert.IsTrue(item2.isDestroyed, "Item 2 was not destroyed.");
@@ -91,7 +91,7 @@ namespace UPool.Tests
             TestItem item1 = pool.Acquire();
             TestItem item2 = pool.Acquire();
             pool.Recycle(item1);
-            pool.Destroy(false);
+            pool.Destroy();
 
             Assert.IsTrue(item1.isDestroyed, "Item 1 was not destroyed.");
             Assert.IsFalse(item2.isDestroyed, "Item 2 was destroyed.");

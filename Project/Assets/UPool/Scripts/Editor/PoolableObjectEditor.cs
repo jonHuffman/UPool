@@ -12,9 +12,9 @@ namespace UPool
 
         private void OnEnable()
         {
-            _disableObjectProperty = serializedObject.FindProperty("_disableObject");
-            _disableCollidersProperty = serializedObject.FindProperty("_disableColliders");
-            _disableRenderersProperty = serializedObject.FindProperty("_disableRenderers");
+            _disableObjectProperty = serializedObject.FindProperty("_disableOnDeallocation");
+            _disableCollidersProperty = serializedObject.FindProperty("_disableCollidersOnDeallocation");
+            _disableRenderersProperty = serializedObject.FindProperty("_disableRenderersOnDeallocation");
         }
 
         public override void OnInspectorGUI()

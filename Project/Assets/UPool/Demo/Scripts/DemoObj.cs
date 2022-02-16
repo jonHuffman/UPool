@@ -29,8 +29,8 @@ namespace UPool.Demo
             _poolableObj = GetComponent<PoolableObject>();
             _renderer = GetComponent<Renderer>();
 
-            _poolableObj.OnAllocate += OnAllocate;
-            _poolableObj.OnDeallocate += OnDeallocate;
+            _poolableObj.ObjectAllocated += OnAllocate;
+            _poolableObj.ObjectDeallocated += OnDeallocate;
 
             _state = AllocationState.Deallocated;
         }

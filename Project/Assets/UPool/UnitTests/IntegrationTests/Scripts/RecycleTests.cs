@@ -30,9 +30,9 @@ public class RecycleTests
     [TearDown]
     public void TearDown()
     {
-        _disableObjPool.Destroy(true);
-        _disableColliderPool.Destroy(true);
-        _disableRendererPool.Destroy(true);
+        _disableObjPool.DestroyAndDeallocateAll();
+        _disableColliderPool.DestroyAndDeallocateAll();
+        _disableRendererPool.DestroyAndDeallocateAll();
         
         Object.Destroy(_container);
     }

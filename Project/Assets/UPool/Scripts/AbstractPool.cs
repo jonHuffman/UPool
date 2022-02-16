@@ -15,7 +15,10 @@ namespace UPool
         /// </summary>
         public int Size
         {
-            get { return _pool.Count; }
+            get
+            {
+                return _pool.Count;
+            }
         }
 
         /// <summary>
@@ -24,7 +27,10 @@ namespace UPool
         /// </summary>
         public int AvailableItems
         {
-            get { return _availableObjects.Count; }
+            get
+            {
+                return _availableObjects.Count;
+            }
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace UPool
 
             IPoolable[] allocated = new IPoolable[_allocatedObjects.Count];
             _allocatedObjects.CopyTo(allocated);
-            foreach(IPoolable item in allocated)
+            foreach (IPoolable item in allocated)
             {
                 Recycle(item);
             }
@@ -82,36 +88,44 @@ namespace UPool
         }
 
         /// <summary>
-        /// Cleans up the Pool, prepping it for garbage collection.
+        /// Cleans up the Pool, prepping it for garbage collection. This will orphan any objects that are currently allocated.
+        /// If you would like to also destroy the allocated objects see <see cref="DestroyAndDeallocateAll"/>
         /// </summary>
-        /// <param name="destroyAllocatedObjects">
-        /// If true, destroys all objects managed by the pool regardless of their allocation status. 
-        /// If false, only unallocated objects will be destroyed. Allocated objects will be orphaned.
-        /// </param>
-        public virtual void Destroy(bool destroyAllocatedObjects = true)
+        public virtual void Destroy()
         {
-            if(_pool == null)
+            if (_pool == null)
             {
                 throw new InvalidOperationException("Pool has already been destroyed.");
             }
 
-            if (destroyAllocatedObjects)
+            while (_availableObjects.Count > 0)
             {
-                foreach(IPoolable item in _allocatedObjects)
-                {
-                    item.OnDeallocate();
-                }
-                foreach (IPoolable item in _pool)
-                {
-                    item.Destroy();
-                }
+                _availableObjects.Dequeue().Destroy();
             }
-            else
+
+            _pool = null;
+            _allocatedObjects = null;
+            _availableObjects = null;
+        }
+
+        /// <summary>
+        /// Destroys all allocated objects and cleans up the Pool, prepping it for garbage collection.
+        /// </summary>
+        public virtual void DestroyAndDeallocateAll()
+        {
+            if (_pool == null)
             {
-                while (_availableObjects.Count > 0)
-                {
-                    _availableObjects.Dequeue().Destroy();
-                }
+                throw new InvalidOperationException("Pool has already been destroyed.");
+            }
+
+            foreach (IPoolable item in _allocatedObjects)
+            {
+                item.OnDeallocate();
+            }
+
+            foreach (IPoolable item in _pool)
+            {
+                item.Destroy();
             }
 
             _pool = null;

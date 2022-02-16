@@ -22,7 +22,7 @@ namespace UPool
         {
             GameObject obj = Object.Instantiate<GameObject>(_template, _container);
             obj.transform.localPosition = Vector3.zero;
-            return (IPoolable)obj.GetComponent(_owner.PoolType);
+            return obj.GetComponent<IPoolable>();
         }
     }
 }
